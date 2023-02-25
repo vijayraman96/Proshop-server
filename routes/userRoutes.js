@@ -11,4 +11,5 @@ router.route('/:id')
     .delete(protect, admin, deleteUser)
     .get(protect, admin, getUserById)
     .put(protect, admin, updateUser)
+console.log('vijay')
 export default router;
