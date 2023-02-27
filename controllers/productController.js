@@ -14,4 +14,41 @@ const getProductById = asyncHandler(async(req, res) => {
     }
 })
 
-export {getProducts, getProductById}
+const updateProduct = asyncHandler(async (req, res) => {
+    const {user, name, image, brand, category, description, review, rating, numReviews, price, countInStock} = req.body;
+
+    const product = await Product.create({
+        user, 
+        name,
+        image,
+        brand,
+        category,
+        description,
+        rating,
+        numReviews,
+        price, 
+        countInStock,
+        review
+    })
+    if(product) {
+        res.status(201).json({
+            _id: product._id,
+            user: product.user, 
+            name: product.name,
+            image: product.image,
+            brand: product.brand,
+            category: product.category,
+            description: product.description,
+            rating: product.rating,
+            numReviews: product.numReviews,
+            price: product.price, 
+            countInStock: product.countInStock,
+            review: product.review
+        })
+    } else {
+        res.status(400)
+        throw new Error('User registartion failed')
+    }
+})
+
+export {getProducts, getProductById, updateProduct}
