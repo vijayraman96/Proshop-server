@@ -4,22 +4,28 @@ import express from 'express';
 import connectDB from './config/db.js';
 import productRoute from './routes/productRoutes.js'
 import userRoute from './routes/userRoutes.js'
+import morgan from 'morgan';
 import orderRoute from './routes/orderRoutes.js';
+import uploadRoute from './routes/uploadRoutes.js';
 import {notFound, errorHandler} from './middleware/errorMiddleware.js'
 import checkMongo from './models/checkModel.js';
 import razorPay from 'razorpay';
 import crypto from 'crypto'
+import path from 'path';
 
 
 connectDB()
 
 const app = express();
 app.use(express.json())
-dotenv.config()
 
-app.get('/', (req, res) => {
-    res.send('Hello');
-})
+dotenv.config()
+// if(process.env.NODE_ENV === "development") {
+//     app.use(morgan('env'))
+// } 
+// app.get('/', (req, res) => {
+//     res.send('Hello');
+// })
 app.post('/api/check/', async (req, res) => {
     const checkStatus = new checkMongo(req.body)
     try {
@@ -54,42 +60,35 @@ app.post('/api/pay/', async (req, res) => {
        return res.json(order)
       });
 })
-// app.post('/api/payment', async(req, res) => {
-//     console.log(req.body.values, 'pay ment - options')
-//     const payId = req.body.values.payId;
-//     const orderId = req.body.values.orderId;
-//     const signature = req.razorpay_signature
-//     const generated_signature = crypto.createHmac('sha256', process.env.RAJORPAY_SECRET_KEY)
-//     generated_signature.update(orderId + "|" + payId)
-//     // if ( generated_signature.digest('hex') === signature){
-//     //     const transaction = new Transaction({
-//     //       transactionid:req.body.transactionid,
-//     //       transactionamount:req.body.transactionamount,
-//     //     });
-//     //     transaction.save(function(err, savedtransac){
-//     //         if(err){
-//     //             console.log(err);
-//     //             return res.status(500).send("Some Problem Occured");
-//     //         }
-//     //         res.send({transaction: savedtransac});
-//     //     });
-//     // }
-// })
+
 app.use('/api/products/', productRoute);
 app.use('/api/users/', userRoute);
 app.use('/api/order', orderRoute);
+app.use('/api/upload', uploadRoute);
 
-// app.get('/api/config/paypal', (req, res) => {
-//     res.send(process.env.PAYPAL_CLIENT_ID)
-//     console.log('vijay')
-// })
-// app.get('/api/products', (req, res) => {
-//     res.json(products);
-// })
-// app.get('/api/products/:id', (req,res) => {
-//     const product = products.find((p) => p._id === req.params.id);
-//     res.json(product);
-// })
+const __dirname = path.resolve()
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+if(process.env.NODE_ENV === "production" ) {
+    // const getDirectoryName = express.static(path.join(__dirname, '/frontend/Proshop/build'));
+    console.log('getDirectoryName', __dirname )
+    app.use(express.static(path.join(__dirname, '/Users/harish_theodore/Desktop/vijay/fullstack/Proshop/frontend/Proshop/build')))
+    console.log('path', path.format({
+        dir: '/Users/harish_theodore/Desktop/vijay/fullstack/Proshop/frontend/Proshop/build',
+        base: 'index.html'
+    }))
+    app.get('/*', (req,res) => {
+        // res.sendFile(path.format({
+        //     dir: '/Users/harish_theodore/Desktop/vijay/fullstack/Proshop/frontend/Proshop/build',
+        //     base: 'index.html'
+        //   }))
+          res.sendFile(path.join(__dirname, '../../frontend/Proshop/build', 'index.html'))
+
+    })
+} else {
+    app.get('/', (req, res) => {
+        res.send('...Api is running')
+    })
+}
 
 app.use(errorHandler);
 app.use(notFound);
