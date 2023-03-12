@@ -1,5 +1,10 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
 var _express = _interopRequireDefault(require("express"));
@@ -133,20 +138,7 @@ var _dirname = _path["default"].resolve();
 app.use('/uploads', _express["default"]["static"](_path["default"].join(_dirname, '/uploads')));
 
 if (process.env.NODE_ENV === "production") {
-  // const getDirectoryName = express.static(path.join(__dirname, '/frontend/Proshop/build'));
-  console.log('getDirectoryName', _dirname);
-  app.use(_express["default"]["static"](_path["default"].join(_dirname, '/Users/harish_theodore/Desktop/vijay/fullstack/Proshop/frontend/Proshop/build')));
-  console.log('path', _path["default"].format({
-    dir: '/Users/harish_theodore/Desktop/vijay/fullstack/Proshop/frontend/Proshop/build',
-    base: 'index.html'
-  }));
-  app.get('/*', function (req, res) {
-    // res.sendFile(path.format({
-    //     dir: '/Users/harish_theodore/Desktop/vijay/fullstack/Proshop/frontend/Proshop/build',
-    //     base: 'index.html'
-    //   }))
-    res.sendFile(_path["default"].join(_dirname, '../../frontend/Proshop/build', 'index.html'));
-  });
+  console.log('x');
 } else {
   app.get('/', function (req, res) {
     res.send('...Api is running');
@@ -157,4 +149,5 @@ app.use(_errorMiddleware.errorHandler);
 app.use(_errorMiddleware.notFound);
 var port = process.env.PORT;
 app.listen(port, console.log("".concat(process.env.PORT, " ")));
-module.exports = app;
+var _default = app;
+exports["default"] = _default;
