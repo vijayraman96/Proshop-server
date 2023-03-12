@@ -80,4 +80,4 @@ app.use(errorHandler);
 app.use(notFound);
 const port = process.env.PORT
 app.listen(port, console.log(`${process.env.PORT} `))
-module.exports = app
+export default app
