@@ -157,3 +157,4 @@ app.use(_errorMiddleware.errorHandler);
 app.use(_errorMiddleware.notFound);
 var port = process.env.PORT;
 app.listen(port, console.log("".concat(process.env.PORT, " ")));
+module.exports = app;
