@@ -69,21 +69,7 @@ app.use('/api/upload', uploadRoute);
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 if(process.env.NODE_ENV === "production" ) {
-    // const getDirectoryName = express.static(path.join(__dirname, '/frontend/Proshop/build'));
-    console.log('getDirectoryName', __dirname )
-    app.use(express.static(path.join(__dirname, '/Users/harish_theodore/Desktop/vijay/fullstack/Proshop/frontend/Proshop/build')))
-    console.log('path', path.format({
-        dir: '/Users/harish_theodore/Desktop/vijay/fullstack/Proshop/frontend/Proshop/build',
-        base: 'index.html'
-    }))
-    app.get('/*', (req,res) => {
-        // res.sendFile(path.format({
-        //     dir: '/Users/harish_theodore/Desktop/vijay/fullstack/Proshop/frontend/Proshop/build',
-        //     base: 'index.html'
-        //   }))
-          res.sendFile(path.join(__dirname, '../../frontend/Proshop/build', 'index.html'))
-
-    })
+    console.log('x')
 } else {
     app.get('/', (req, res) => {
         res.send('...Api is running')
